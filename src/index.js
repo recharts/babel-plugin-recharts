@@ -54,6 +54,11 @@ export default function ({types: t}) {
             const { name: importedName } = imported;
 
             spec = t.importDefaultSpecifier(t.identifier(localName));
+
+            if (!pkgMap[importedName]) {
+              throw new Error(`Recharts ${importedName} was not in known modules.`);
+            }
+
             importedPath += pkgMap[importedName];
           }
 

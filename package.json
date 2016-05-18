@@ -4,7 +4,8 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "build": "rm -rf lib && babel src --out-dir lib"
+    "build": "rm -rf lib && babel src --out-dir lib",
+    "test": "mocha --check-leaks --compilers js:babel-core/register"
   },
   "keywords": [
     "babel-plugin",
@@ -18,7 +19,8 @@
     "babel-core": "^6.9.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-0": "^6.5.0",
-    "recharts": "^0.10.5"
+    "recharts": "^0.10.5",
+    "mocha": "^2.4.5"
   },
   "babel": {
     "presets": [
