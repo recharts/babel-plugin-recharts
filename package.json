@@ -1,0 +1,32 @@
+{
+  "name": "babel-plugin-recharts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "rm -rf lib && babel src --out-dir lib"
+  },
+  "keywords": [
+    "babel-plugin",
+    "recharts",
+    "modules"
+  ],
+  "author": "jasonHzq",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "recharts": "^0.10.5"
+  },
+  "babel": {
+    "presets": [
+      "es2015", "stage-0"
+    ]
+  },
+  "files": [
+    "lib",
+    "*.md"
+  ]
+}
