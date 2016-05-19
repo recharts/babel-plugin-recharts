@@ -6,9 +6,9 @@ A babel plugin help you import less Recharts modules.
 [![build status](https://travis-ci.org/recharts/babel-plugin-recharts.svg)](https://travis-ci.org/recharts/babel-plugin-recharts)
 [![npm downloads](https://img.shields.io/npm/dt/babel-plugin-recharts.svg?style=flat-square)](https://www.npmjs.com/package/babel-plugin-recharts)
 
-
 ## install
-```
+
+```sh
 $ npm i -D babel-plugin-recharts
 ```
 
@@ -16,13 +16,13 @@ $ npm i -D babel-plugin-recharts
 
 from
 
-```
+```jsx
 import { Line, Pie, Treemap } from 'recharts';
 ```
 
 to
 
-```
+```jsx
 import Treemap from 'recharts/chart/Treemap';
 import Pie from 'recharts/polar/Pie';
 import Line from 'recharts/cartesian/Line';
@@ -42,7 +42,7 @@ import Line from 'recharts/cartesian/Line';
 
 ### webpack.config.js
 
-```
+```js
 'module': {
   'loaders': [{
     'loader': 'babel-loader',
