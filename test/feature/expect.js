@@ -1,22 +1,22 @@
 'use strict';
 
-var _Line = require('recharts/cartesian/Line');
+var _Line = require('recharts/lib/cartesian/Line');
 
 var _Line2 = _interopRequireDefault(_Line);
 
-var _Area = require('recharts/cartesian/Area');
+var _Area = require('recharts/lib/cartesian/Area');
 
 var _Area2 = _interopRequireDefault(_Area);
 
-var _Treemap = require('recharts/chart/Treemap');
+var _Treemap = require('recharts/lib/chart/Treemap');
 
 var _Treemap2 = _interopRequireDefault(_Treemap);
 
-var _Pie = require('recharts/polar/Pie');
+var _Pie = require('recharts/lib/polar/Pie');
 
 var _Pie2 = _interopRequireDefault(_Pie);
 
-var _Cell = require('recharts/component/Cell');
+var _Cell = require('recharts/lib/component/Cell');
 
 var _Cell2 = _interopRequireDefault(_Cell);
 

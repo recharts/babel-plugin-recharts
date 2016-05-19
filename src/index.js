@@ -59,7 +59,7 @@ export default function ({types: t}) {
               throw new Error(`Recharts ${importedName} was not in known modules.`);
             }
 
-            importedPath += pkgMap[importedName];
+            importedPath = rechartsLib + pkgMap[importedName];
           }
 
           path.insertAfter(t.importDeclaration([spec], t.stringLiteral(importedPath)));
