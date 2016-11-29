@@ -1,33 +1,110 @@
+/* 
+ * restraint: 
+ *   1. common code: import 'xx';
+ *   2. export: export xx from xx, export x, { xx } from 'xx';
+ *   
+ */
+
+
 import Module from 'module';
 import path from 'path';
 import fs from 'fs';
+import * as babylon from "babylon";
+import traverse from "babel-traverse";
+import * as t from 'babel-types';
 
 const recharts = 'recharts';
 const rechartsLib = 'recharts/lib';
 
 const _module = new Module();
 
-const rechartsPath = path.dirname(Module._resolveFilename('recharts', {
+const rechartsLibPath = path.dirname(Module._resolveFilename('recharts', {
   ..._module,
   paths: Module._nodeModulePaths(process.cwd()),
 }));
+const rechartsPath = path.join(rechartsLibPath, '..');
+const rechartsSrcPath = path.join(rechartsPath, 'src');
+const rechartsSrcIndexPath = path.join(rechartsSrcPath, 'index.js');
+const srcCode = fs.readFileSync(rechartsSrcIndexPath, 'utf-8');
 
-const indexFile = fs.readFileSync(rechartsPath + '/../src/index.js', 'utf-8');
-const regStr = 'export ([\\S]+) from \'([\\S]+)\';';
+const srcAst = babylon.parse(srcCode, {
+  sourceType: 'module',
+  plugins: ["exportExtensions"],
+});
 
-const regx = new RegExp(regStr);
-const globalRegx = new RegExp(regStr, 'g');
+function findPath(source) {
+  const finalModule = {
+    ..._module,
+    paths: Module._nodeModulePaths(rechartsSrcPath),
+  };
 
-const pkgMap = indexFile.match(globalRegx)
-  .map(exp => exp.match(regx).slice(1))
-  .reduce((result, [pkgId, path]) => {
-    return {
-      ...result,
-      [pkgId]: path.slice(1),
-    };
-  }, {});
+  const [id, paths] = Module._resolveLookupPaths(source, finalModule);
+  const finalPaths = [...paths, rechartsSrcPath];
+
+  const absPath = Module._findPath(source, finalPaths);
+
+  if (absPath.indexOf(path.join(rechartsPath, 'node_modules')) >= 0) {
+    return source;
+  }
+
+  return 'recharts/lib/' + path.relative(rechartsSrcPath, absPath);
+}
+
+let pkgMap = {};
+let commonImport = [];
+
+traverse(srcAst, {
+  ImportDeclaration(path) {
+    const { source, specifiers } = path.node;
+
+    if (!specifiers.length) {
+      // get common import like import 'polyfill'
+      commonImport = [...commonImport, source.value];
+    }
+  },
+
+  ExportNamedDeclaration(path) {
+    const { source, specifiers } = path.node;
+
+    specifiers.forEach(spec => {
+      const { exported, local } = spec;
+
+      if (t.isExportDefaultSpecifier(spec)) {
+        pkgMap = {
+          ...pkgMap,
+          [exported.name]: source.value,
+        };
+      } else {
+        pkgMap = {
+          ...pkgMap,
+          [exported.name]: [source.value, local.name],
+        };
+      }
+    });
+  },
+});
+
+Object.keys(pkgMap).forEach(key => {
+  const pkgMapVal = pkgMap[key];
+
+  if (Array.isArray(pkgMapVal)) {
+    const source = findPath(pkgMapVal[0]);
+
+    pkgMap[key] = [source, ...pkgMap.slice(1)];
+  }
+
+  pkgMap[key] = findPath(pkgMapVal);
+});
+
+commonImport = commonImport.map(source => {
+  return findPath(source);
+});
+
+console.log(pkgMap, commonImport);
 
 export default function ({types: t}) {
+  let hasAddCommonCode = false;
+
   return {
     visitor: {
       ImportDeclaration(path) {
@@ -42,7 +119,7 @@ export default function ({types: t}) {
 
         if (!specifiers.filter(t.isImportSpecifier).length) {
           return;
-        } 
+        }
 
         specifiers.forEach(spec => {
           const { local , imported } = spec;
@@ -59,10 +136,17 @@ export default function ({types: t}) {
               throw new Error(`Recharts ${importedName} was not in known modules.`);
             }
 
-            importedPath = rechartsLib + pkgMap[importedName];
+            importedPath = pkgMap[importedName];
           }
 
           path.insertAfter(t.importDeclaration([spec], t.stringLiteral(importedPath)));
+
+          if (!hasAddCommonCode) {
+            hasAddCommonCode = true;
+            commonImport.forEach(cPath => {
+              path.insertAfter(t.importDeclaration([], t.stringLiteral(cPath)));
+            });
+          }
         });
 
         path.remove();
