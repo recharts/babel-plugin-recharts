@@ -44,6 +44,7 @@ function findPath(source) {
   const absPath = Module._findPath(source, finalPaths);
 
   if (absPath.indexOf(path.join(rechartsPath, 'node_modules')) >= 0) {
+    // node_modules source
     return source;
   }
 
@@ -103,6 +104,7 @@ commonImport = commonImport.map(source => {
 console.log(pkgMap, commonImport);
 
 export default function ({types: t}) {
+  // import common code once in a file
   let hasAddCommonCode = false;
 
   return {
