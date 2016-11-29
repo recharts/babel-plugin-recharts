@@ -26,9 +26,9 @@ into this:
 ```js
 'use strict';
 
-require('core-js/es6/math');
-
 require('recharts/lib/polyfill.js');
+
+require('core-js/es6/math');
 
 var _Line = require('recharts/lib/cartesian/Line.js');
 
