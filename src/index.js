@@ -101,8 +101,6 @@ commonImport = commonImport.map(source => {
   return findPath(source);
 });
 
-console.log(pkgMap, commonImport);
-
 export default function ({types: t}) {
   // import common code once in a file
   let hasAddCommonCode = false;
