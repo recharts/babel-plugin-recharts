@@ -139,14 +139,14 @@ export default function ({types: t}) {
             importedPath = pkgMap[importedName];
           }
 
-          path.insertAfter(t.importDeclaration([spec], t.stringLiteral(importedPath)));
-
           if (!hasAddCommonCode) {
             hasAddCommonCode = true;
             commonImport.forEach(cPath => {
-              path.insertAfter(t.importDeclaration([], t.stringLiteral(cPath)));
+              path.insertBefore(t.importDeclaration([], t.stringLiteral(cPath)));
             });
           }
+
+          path.insertAfter(t.importDeclaration([spec], t.stringLiteral(importedPath)));
         });
 
         path.remove();
