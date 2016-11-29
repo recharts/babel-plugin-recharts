@@ -14,19 +14,50 @@ $ npm i -D babel-plugin-recharts
 
 ## Example
 
-from
+The plugin automatically compiles this :
 
 ```jsx
-import { Line, Pie, Treemap } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Area, AreaChart, Tooltip,
+  ResponsiveContainer } from 'recharts';
 ```
 
-to
+into this: 
 
-```jsx
-import Treemap from 'recharts/chart/Treemap';
-import Pie from 'recharts/polar/Pie';
-import Line from 'recharts/cartesian/Line';
+```js
+'use strict';
+
+var _XAxis = require('recharts/lib/cartesian/XAxis');
+
+var _XAxis2 = _interopRequireDefault(_XAxis);
+
+var _YAxis = require('recharts/lib/cartesian/YAxis');
+
+var _YAxis2 = _interopRequireDefault(_YAxis);
+
+var _CartesianGrid = require('recharts/lib/cartesian/CartesianGrid');
+
+var _CartesianGrid2 = _interopRequireDefault(_CartesianGrid);
+
+var _Area = require('recharts/lib/cartesian/Area');
+
+var _Area2 = _interopRequireDefault(_Area);
+
+var _AreaChart = require('recharts/lib/chart/AreaChart');
+
+var _AreaChart2 = _interopRequireDefault(_AreaChart);
+
+var _Tooltip = require('recharts/lib/component/Tooltip');
+
+var _Tooltip2 = _interopRequireDefault(_Tooltip);
+
+var _ResponsiveContainer = require('recharts/lib/component/ResponsiveContainer');
+
+var _ResponsiveContainer2 = _interopRequireDefault(_ResponsiveContainer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 ```
+
+Hence you end up loading less modules.
 
 ## Usage
 
