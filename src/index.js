@@ -1,8 +1,8 @@
-/* 
- * restraint: 
+/*
+ * restraint:
  *   1. common code: import 'xx';
  *   2. export: export xx from xx, export x, { xx } from 'xx';
- *   
+ *
  */
 
 
@@ -41,14 +41,30 @@ function findPath(source) {
   const [id, paths] = Module._resolveLookupPaths(source, finalModule);
   const finalPaths = [...paths, rechartsSrcPath];
 
+  let sourceFullPath;
+  try {
+    const fullPath = path.resolve(rechartsSrcPath, source.indexOf('.js') >= 0 ? source : `${source}.js`);
+    fs.readFileSync(fullPath, 'utf-8');
+    sourceFullPath = fullPath;
+  } catch(err) {
+
+  }
+  if (sourceFullPath) {
+    // 下面解析project src 下面的组件
+    // 完整引用路径
+    const sourceLibPath = `${rechartsLib}/${path.relative(rechartsSrcPath, sourceFullPath)}`;
+    return sourceLibPath;
+  }
+
+
   const absPath = Module._findPath(source, finalPaths);
 
-  if (absPath.indexOf(path.join(rechartsPath, 'node_modules')) >= 0) {
+  if (absPath && (absPath.indexOf(path.join(rechartsPath, 'node_modules')) >= 0) || absPath.indexOf('node_modules') >= 0) {
     // node_modules source
     return source;
   }
 
-  return 'recharts/lib/' + path.relative(rechartsSrcPath, absPath);
+  return '';
 }
 
 let pkgMap = {};
