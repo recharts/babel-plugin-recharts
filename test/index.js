@@ -13,7 +13,6 @@ describe('cherry-picked modular builds', () => {
     const actual = transformFileSync(actualPath, {
       'plugins': [plugin],
     }).code;
-    console.log(actual);
     const expected = fs.readFileSync(expectedPath, 'utf8');
 
     assert.strictEqual(actual.trim(), expected.trim());

@@ -44,7 +44,7 @@ function findPath(source) {
   let sourceFullPath;
   try {
     const fullPath = path.resolve(rechartsSrcPath, source.indexOf('.js') >= 0 ? source : `${source}.js`);
-    fs.readFileSync(fullPath, 'utf-8');
+    require.resolve(fullPath);
     sourceFullPath = fullPath;
   } catch(err) {
 
