@@ -14,48 +14,32 @@ $ npm i -D babel-plugin-recharts
 
 ## Example
 
-The plugin automatically compiles this :
+The plugin automatically compiles `recharts` import, like this:
 
 ```jsx
-import { XAxis, YAxis, CartesianGrid, Area, AreaChart, Tooltip,
-  ResponsiveContainer } from 'recharts';
+import { Line, Area, Pie, Treemap, Cell } from 'recharts';
 ```
 
-into this: 
+babel plugin will be parsed into:
 
 ```js
-'use strict';
+"use strict";
 
-require('recharts/lib/polyfill.js');
+require("recharts/lib/polyfill.js");
 
-require('core-js/es6/math');
+var _Line = _interopRequireDefault(require("recharts/lib/cartesian/Line.js"));
 
-var _Line = require('recharts/lib/cartesian/Line.js');
+var _Area = _interopRequireDefault(require("recharts/lib/cartesian/Area.js"));
 
-var _Line2 = _interopRequireDefault(_Line);
+var _Treemap = _interopRequireDefault(require("recharts/lib/chart/Treemap.js"));
 
-var _Area = require('recharts/lib/cartesian/Area.js');
+var _Pie = _interopRequireDefault(require("recharts/lib/polar/Pie.js"));
 
-var _Area2 = _interopRequireDefault(_Area);
+var _Cell = _interopRequireDefault(require("recharts/lib/component/Cell.js"));
 
-var _Treemap = require('recharts/lib/chart/Treemap.js');
-
-var _Treemap2 = _interopRequireDefault(_Treemap);
-
-var _Pie = require('recharts/lib/polar/Pie.js');
-
-var _Pie2 = _interopRequireDefault(_Pie);
-
-var _Cell = require('recharts/lib/component/Cell.js');
-
-var _Cell2 = _interopRequireDefault(_Cell);
-
-var _recharts = require('recharts');
-
-var _recharts2 = _interopRequireDefault(_recharts);
+var _recharts = _interopRequireDefault(require("recharts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 ```
 
 Hence you end up loading less modules.
@@ -66,11 +50,10 @@ Hence you end up loading less modules.
 
 ```js
 {
-  "plugins": ["recharts"],
-  "presets": ["es2015"]
+  "plugins": ["recharts"]
+  ...
 }
 ```
-
 
 ### webpack.config.js
 
@@ -82,7 +65,7 @@ Hence you end up loading less modules.
     'exclude': /node_modules/,
     'query': {
       'plugins': ['recharts'],
-      'presets': ['es2015']
+      ...
     }
   }]
 }
@@ -96,4 +79,4 @@ Hence you end up loading less modules.
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2015-2016 Recharts Group
+Copyright (c) 2015-2018 Recharts Group

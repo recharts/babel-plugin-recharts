@@ -5,13 +5,12 @@
  *
  */
 
-
 import Module from 'module';
 import path from 'path';
 import fs from 'fs';
 import * as babylon from "babylon";
-import traverse from "babel-traverse";
-import * as t from 'babel-types';
+import traverse from "@babel/traverse";
+import * as t from '@babel/types';
 
 const recharts = 'recharts';
 const rechartsLib = 'recharts/lib';
@@ -50,12 +49,11 @@ function findPath(source) {
 
   }
   if (sourceFullPath) {
-    // 下面解析project src 下面的组件
-    // 完整引用路径
+    // parse the component of project src
+    // full quote path
     const sourceLibPath = `${rechartsLib}/${path.relative(rechartsSrcPath, sourceFullPath)}`;
     return sourceLibPath;
   }
-
 
   const absPath = Module._findPath(source, finalPaths);
 

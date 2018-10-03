@@ -1,31 +1,17 @@
-'use strict';
+"use strict";
 
-require('recharts/lib/polyfill.js');
+require("recharts/lib/polyfill.js");
 
-require('core-js/es6/math');
+var _Line = _interopRequireDefault(require("recharts/lib/cartesian/Line.js"));
 
-var _Line = require('recharts/lib/cartesian/Line.js');
+var _Area = _interopRequireDefault(require("recharts/lib/cartesian/Area.js"));
 
-var _Line2 = _interopRequireDefault(_Line);
+var _Treemap = _interopRequireDefault(require("recharts/lib/chart/Treemap.js"));
 
-var _Area = require('recharts/lib/cartesian/Area.js');
+var _Pie = _interopRequireDefault(require("recharts/lib/polar/Pie.js"));
 
-var _Area2 = _interopRequireDefault(_Area);
+var _Cell = _interopRequireDefault(require("recharts/lib/component/Cell.js"));
 
-var _Treemap = require('recharts/lib/chart/Treemap.js');
-
-var _Treemap2 = _interopRequireDefault(_Treemap);
-
-var _Pie = require('recharts/lib/polar/Pie.js');
-
-var _Pie2 = _interopRequireDefault(_Pie);
-
-var _Cell = require('recharts/lib/component/Cell.js');
-
-var _Cell2 = _interopRequireDefault(_Cell);
-
-var _recharts = require('recharts');
-
-var _recharts2 = _interopRequireDefault(_recharts);
+var _recharts = _interopRequireDefault(require("recharts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
