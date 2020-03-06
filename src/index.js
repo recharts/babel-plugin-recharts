@@ -37,7 +37,18 @@ function findPath(source) {
     paths: Module._nodeModulePaths(rechartsSrcPath),
   };
 
-  const [id, paths] = Module._resolveLookupPaths(source, finalModule);
+
+  const nodeMajorVersion = process.versions.node.split('.')[0];
+  let paths;
+  let id;
+  // This internal API has change it's functionality
+  if (nodeMajorVersion < 12) {
+    // NodeJS version <= 10: use _resolveLookupPaths
+    [id, paths] = Module._resolveLookupPaths(source, finalModule);
+  } else {
+    // NodeJS version 12: use _nodeModulePaths from above
+    paths = finalModule.paths;
+  }
   const finalPaths = [...paths, rechartsSrcPath];
 
   let sourceFullPath;
