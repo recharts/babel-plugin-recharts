@@ -43,7 +43,7 @@ function findPath(source) {
   let id;
   // This internal API has changed it's functionality
   if (nodeMajorVersion < 12) {
-    // NodeJS version <= 10: use _resolveLookupPaths
+    // Node.js version < 12: use _resolveLookupPaths
     [id, paths] = Module._resolveLookupPaths(source, finalModule);
   } else {
     // Node.js version >= 12: use _nodeModulePaths from above
