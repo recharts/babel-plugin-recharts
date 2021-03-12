@@ -46,6 +46,8 @@ Hence you end up loading less modules.
 
 ## Usage
 
+You can choose to *either* edit your custom Babel configuration *or* your Webpack configuration. [Both options work.](https://github.com/recharts/babel-plugin-recharts/issues/7).
+
 ### .babelrc
 
 ```js
