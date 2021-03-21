@@ -1,7 +1,5 @@
 "use strict";
 
-require("recharts/lib/polyfill.js");
-
 var _Line = _interopRequireDefault(require("recharts/lib/cartesian/Line.js"));
 
 var _Area = _interopRequireDefault(require("recharts/lib/cartesian/Area.js"));

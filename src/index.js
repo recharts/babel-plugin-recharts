@@ -8,8 +8,8 @@
 import Module from 'module';
 import path from 'path';
 import fs from 'fs';
-import * as babylon from "babylon";
-import traverse from "@babel/traverse";
+import * as babelParser from '@babel/parser';
+import traverse from '@babel/traverse';
 import * as t from '@babel/types';
 
 const recharts = 'recharts';
@@ -23,12 +23,12 @@ const rechartsLibPath = path.dirname(Module._resolveFilename('recharts', {
 }));
 const rechartsPath = path.join(rechartsLibPath, '..');
 const rechartsSrcPath = path.join(rechartsPath, 'src');
-const rechartsSrcIndexPath = path.join(rechartsSrcPath, 'index.js');
+const rechartsSrcIndexPath = path.join(rechartsSrcPath, 'index.ts');
 const srcCode = fs.readFileSync(rechartsSrcIndexPath, 'utf-8');
 
-const srcAst = babylon.parse(srcCode, {
+const srcAst = babelParser.parse(srcCode, {
   sourceType: 'module',
-  plugins: ["exportExtensions"],
+  plugins: ['exportExtensions', 'typescript'],
 });
 
 function findPath(source) {
@@ -36,7 +36,6 @@ function findPath(source) {
     ..._module,
     paths: Module._nodeModulePaths(rechartsSrcPath),
   };
-
 
   const nodeMajorVersion = process.versions.node.split('.')[0];
   let paths;
@@ -53,9 +52,18 @@ function findPath(source) {
 
   let sourceFullPath;
   try {
-    const fullPath = path.resolve(rechartsSrcPath, source.indexOf('.js') >= 0 ? source : `${source}.js`);
-    require.resolve(fullPath);
-    sourceFullPath = fullPath;
+    // All components use the `*.tsx` file extension
+    const fullTSXPath = path.resolve(rechartsSrcPath, source.indexOf('.tsx') >= 0 ? source : `${source}.tsx`);
+    require.resolve(fullTSXPath);
+    sourceFullPath = fullTSXPath;
+  } catch(err) {
+
+  }
+  try {
+    // Files under `utils` use the `*.ts` file extension
+    const fulllTSPath = path.resolve(rechartsSrcPath, source.indexOf('.ts') >= 0 ? source : `${source}.ts`);
+    require.resolve(fulllTSPath);
+    sourceFullPath = fulllTSPath;
   } catch(err) {
 
   }
@@ -63,7 +71,7 @@ function findPath(source) {
     // parse the component of project src
     // full quote path
     const sourceLibPath = `${rechartsLib}/${path.relative(rechartsSrcPath, sourceFullPath)}`;
-    return sourceLibPath;
+    return sourceLibPath.replace('.tsx', '.js').replace('.ts', '.js');
   }
 
   const absPath = Module._findPath(source, finalPaths);
@@ -112,14 +120,7 @@ traverse(srcAst, {
 
 Object.keys(pkgMap).forEach(key => {
   const pkgMapVal = pkgMap[key];
-
-  if (Array.isArray(pkgMapVal)) {
-    const source = findPath(pkgMapVal[0]);
-
-    pkgMap[key] = [source, ...pkgMap.slice(1)];
-  }
-
-  pkgMap[key] = findPath(pkgMapVal);
+  pkgMap[key] = findPath(Array.isArray(pkgMapVal) ? pkgMapVal[0] : pkgMapVal);
 });
 
 commonImport = commonImport.map(source => {
