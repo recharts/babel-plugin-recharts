@@ -1,3 +1,8 @@
+## 2.0.0 / 2021-03-21
+
+### feat
+
+* feat: support recharts 2.x
 ## 1.2.0 / 2018-10-04
 
 ### feat

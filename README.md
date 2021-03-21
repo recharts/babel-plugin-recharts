@@ -81,4 +81,4 @@ You can choose to *either* edit your custom Babel configuration *or* your Webpac
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2015-2018 Recharts Group
+Copyright (c) 2015-2021 Recharts Group
