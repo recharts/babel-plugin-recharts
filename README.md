@@ -1,5 +1,7 @@
 # babel-plugin-recharts
 
+## **Note:** This project is currently unmaintained and does not work with recharts 2.0 and above
+
 A babel plugin help you import less Recharts modules.
 
 [![npm version](https://badge.fury.io/js/babel-plugin-recharts.png)](https://badge.fury.io/js/babel-plugin-recharts)
